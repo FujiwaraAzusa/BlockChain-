@@ -38,6 +38,9 @@ function connectToDNSSeed(p2pNetwork) {
         if (type === 'NODE_LIST') {
             console.log('Received node list from DNS seed:', data);
             data.forEach((node) => {
+                // 自己接続を回避
+                if (node.port == port) return;
+
                 if (node.address && node.port) { // アドレスとポートが存在する場合のみ接続
                     const peer = `ws://${node.address}:${node.port}`;
                     if (!p2pNetwork.sockets.find((s) => s.url === peer)) {
